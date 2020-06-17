@@ -30,7 +30,8 @@ export default class UdpConnector {
 
     static GenerateResponseMessage() {
         return Buffer.from(JSON.stringify({
-            ...this.systemInfo
+            type: 'DEVICE_DISCOVERY_RESPONSE',
+            data: this.systemInfo
         }));
     }
     
@@ -49,7 +50,6 @@ export default class UdpConnector {
             this.socket.on('listening', () => {
                 this.socket.setBroadcast(true);
                 console.log(`UDP server listening on port ${this.PORT}`);
-
             });
 
             this.socket.bind(this.PORT);
