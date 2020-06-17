@@ -30,7 +30,7 @@ export default class UdpConnector {
 
     static GenerateResponseMessage() {
         return Buffer.from(JSON.stringify({
-            type: 'DEVICE_DISCOVERY_RESPONSE',
+            type: 'DEVICES_DISCOVERY_RESPONSE',
             data: this.systemInfo
         }));
     }
