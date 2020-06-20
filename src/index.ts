@@ -1,11 +1,6 @@
+import { execSync } from 'child_process';
 import { Socket, createSocket } from 'dgram';
-import { 
-    cpu as getCpuInfo,
-    system as getSystemInfo,
-    bios as getBiosInfo,
-    baseboard as getBaseboardInfo,
-    chassis as getChassisInfo
-} from 'systeminformation';
+import { platform, release, type, version, arch, hostname, cpus, networkInterfaces } from 'os';
 
 export default class UdpConnector {
     static PORT: number = 41234;
@@ -13,18 +8,35 @@ export default class UdpConnector {
     static systemInfo: object;
     static responseMessage: Buffer;
 
+    static getVersion() {
+        if (platform() === 'linux') {
+            const releaseInfo = execSync('cat /etc/os-release').toString();
+            const releaseInfoLines = releaseInfo.split('\n');
+
+            let version = '';
+            releaseInfoLines.forEach((line) => {
+                const parts = line.replace('"', '').split('=');
+                if (parts[0] === 'PRETTY_NAME') {
+                    version = parts[1];
+                }
+            });
+
+            return version;
+        } else {
+            return version();
+        }
+    }
+
     static async GenerateSystemInfo() {
-        const cpu = await getCpuInfo();
-        const system = await getSystemInfo();
-        const bios = await getBiosInfo();
-        const baseboard = await getBaseboardInfo();
-        const chassis = await getChassisInfo();
         return {
-            cpu,
-            system,
-            bios,
-            baseboard,
-            chassis,
+            platform: platform(),
+            release: release(),
+            type: type(),
+            version: this.getVersion(),
+            arch: arch(),
+            hostname: hostname(),
+            cpus: cpus(),
+            networkInterfaces: networkInterfaces(),
         }
     }
 

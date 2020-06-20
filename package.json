@@ -6,9 +6,7 @@
   "bin": {
     "service-emitter": "index.js"
   },
-  "dependencies": {
-    "systeminformation": "^4.26.9"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@types/node": "^14.0.13"
   },
