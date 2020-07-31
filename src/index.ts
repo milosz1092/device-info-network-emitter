@@ -15,7 +15,7 @@ export default class UdpConnector {
 
             let version = '';
             releaseInfoLines.forEach((line) => {
-                const parts = line.replace('"', '').split('=');
+                const parts = line.replace(/"/g,'').split('=');
                 if (parts[0] === 'PRETTY_NAME') {
                     version = parts[1];
                 }
